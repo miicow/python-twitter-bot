@@ -18,3 +18,19 @@ oauth = OAuth(
     credential.CONSUMER_SECRET
 )
 t = Twitter(auth=oauth)
+
+
+def scrape_coursera():
+    HEADERS = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6)'
+                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Safari/537.36'
+    }
+
+    r = requests.get('https://blog.coursera.org', headers=HEADERS)
+    tree = fromstring(r.content)
+
+    links = tree.xpath('//div[@class="recent"]//div[@class="title"]/a/@href')
+    print(links)
+
+
+scrape_coursera()
