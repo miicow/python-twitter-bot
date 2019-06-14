@@ -84,3 +84,25 @@ def scrape_thenewstack():
             continue
 
         yield '"%s" %s' % (text, link)
+
+
+def main():
+    """The loop for the bot to tweet every 6 hours"""
+    print('---Bot Started---\n')
+    scrape_functions = ['scrape_coursera', 'scrape_thenewstack']
+    scrape_iterators = []
+    for func in scrape_functions:
+        scrape_iterators.append(globals()[func]())
+    while True:
+        for i, iterator in enumerate(scrape_iterators):
+            try:
+                tweet = next(iterator)
+                t.statuses.update(status=tweet)
+                print(tweet, end='\n\n')
+                time.sleep(600)
+            except StopIteration:
+                scrape_iterators[i] = globals()[newsfunc[i]]()
+
+
+if __name__ == "__main__":
+    main()
