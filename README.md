@@ -1,4 +1,4 @@
-# Project Title
+# Python 3 Scrapper Twitter Bot
 
 Twitter Bot built with Python, Scraps Web for content and tweets it to my account.
 
