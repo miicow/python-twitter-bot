@@ -64,3 +64,23 @@ def scrape_coursera():
             continue
 
         yield '"%s" %s' % (text, link)
+
+
+def scrape_thenewstack():
+    """Scrapes news from thenewstack.io"""
+    url = 'https://thenewstack.io'
+
+    r = requests.get(url, verify=False)
+    tree = fromstring(r.content)
+    links = tree.xpath('//div[@class="normalstory-box"]/header/h2/a/@href')
+
+    for link in links:
+        r = requests.get(link, verify=False)
+        news_tree = fromstring(r.content)
+        paragraphs = news_tree.xpath('//div[@class="post-content"]/p')
+        paragraph = extract_paragraphtext(paragraphs)
+        text = extract_text(paragraph)
+        if not text:
+            continue
+
+        yield '"%s" %s' % (text, link)
